@@ -9,7 +9,21 @@ function initialize() {
   ctx.fillRect(0, 0, width, height);
 }
 
-// ctx.fillStyle = '#ffffff';
-// ctx.fillRect(20, 100, 20, 100);
+function Paddle(x, y, width, height) {
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.render = function() {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+}
 
 initialize();
+
+var player = new Paddle(20, 100, 20, 100);
+player.render();
+
+var computer = new Paddle(660, 100, 20, 100);
+computer.render();
