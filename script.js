@@ -4,6 +4,31 @@ var width = c.width;
 var height = c.height;
 var middle = ((width - 5) / 2);
 
+// Create the paddles and ball objects
+var player = new Paddle(20, 100, 20, 100);
+var computer = new Paddle(660, 100, 20, 100);
+var ball = new Ball(360, 300);
+
+function Ball(x, y) {
+  this.x = x;
+  this.y = y;
+  this.radius = 10;
+  this.x_speed = 3; // Horizontal speed
+  this.y_speed = 1; // Vertical speed
+
+  this.render = function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
+    ctx.fillStyle = '#00FFFF';
+    ctx.fill();
+  }
+
+  this.updatePosition = function() {
+    this.x += this.x_speed;
+    this.y += this.y_speed;
+  }
+}
+
 function Paddle(x, y, width, height) {
   this.x = x;
   this.y = y;
@@ -15,34 +40,23 @@ function Paddle(x, y, width, height) {
   }
 }
 
-function Ball(x, y) {
-  this.x = x;
-  this.y = y;
-  this.radius = 10;
-  this.render = function() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 2*Math.PI, false);
-    ctx.fillStyle = '#00FFFF';
-    ctx.fill();
-  }
-}
-
 // Draws the initial screen
 function initialize() {
   // Draw the canvas background
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
 
-  // Create the paddles
-  var player = new Paddle(20, 100, 20, 100);
-  var computer = new Paddle(660, 100, 20, 100);
-  var ball = new Ball(360, 300);
-
   // Render the paddles
   computer.render();
   player.render();
   ball.render();
 }
+
+var update = function() {
+  // player.update();
+  // computer.update();
+  ball.updatePosition();
+};
 
 // Render the middle dashed line
 function renderLineBoundary() {
@@ -58,6 +72,5 @@ function renderLineBoundary() {
 function main() {
   initialize();
   renderLineBoundary();
-}
-
-main();
+  update();
+};
