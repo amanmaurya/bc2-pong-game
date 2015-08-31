@@ -50,16 +50,8 @@ function initialize() {
   computer.render();
   player.render();
   ball.render();
-}
 
-var update = function() {
-  // player.update();
-  // computer.update();
-  ball.updatePosition();
-};
-
-// Render the middle dashed line
-function renderLineBoundary() {
+  // Render the line boundary
   ctx.setLineDash([15, 20]);
   ctx.beginPath();
   ctx.strokeStyle = '#ffffff';
@@ -69,8 +61,15 @@ function renderLineBoundary() {
   ctx.stroke();
 }
 
+var update = function() {
+  ball.updatePosition();
+};
+
 function main() {
   initialize();
-  renderLineBoundary();
   update();
+};
+
+window.onload = function() {
+  main();
 };
