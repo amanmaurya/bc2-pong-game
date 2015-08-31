@@ -30,8 +30,6 @@ function initialize() {
   player.render();
 }
 
-initialize();
-
 // Render the middle dashed line
 function renderLineBoundary() {
   ctx.setLineDash([15, 20]);
@@ -43,3 +41,9 @@ function renderLineBoundary() {
   ctx.stroke();
 }
 
+function main() {
+  initialize();
+  renderLineBoundary();
+}
+
+main();
