@@ -15,6 +15,18 @@ function Paddle(x, y, width, height) {
   }
 }
 
+function Ball(x, y) {
+  this.x = x;
+  this.y = y;
+  this.radius = 10;
+  this.render = function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 2*Math.PI, false);
+    ctx.fillStyle = '#00FFFF';
+    ctx.fill();
+  }
+}
+
 // Draws the initial screen
 function initialize() {
   // Draw the canvas background
@@ -24,10 +36,12 @@ function initialize() {
   // Create the paddles
   var player = new Paddle(20, 100, 20, 100);
   var computer = new Paddle(660, 100, 20, 100);
+  var ball = new Ball(360, 300);
 
   // Render the paddles
   computer.render();
   player.render();
+  ball.render();
 }
 
 // Render the middle dashed line
