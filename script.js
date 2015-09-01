@@ -20,6 +20,15 @@ var player = new Paddle(20, 100, 20, 100); // Left Paddle
 var computer = new Paddle(660, 100, 20, 100); // Right paddle
 var ball = new Ball(360, 300);
 
+// Determines whether the ball is served heading up or down
+function randomDirection() {
+  if (Math.random() > 0.5) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
 function Ball(x, y) {
   this.x = x;
   this.y = y;
@@ -48,6 +57,20 @@ function Ball(x, y) {
     else if (this.y - 10 > height) {
       this.y = height - 10; // Set the new position
       this.y_speed = -this.y_speed; // Reverse direction
+    }
+
+    // If the computer has scored
+    if (this.x < 0) {
+      this.x_speed = 5; // Serve the ball to the computer
+      this.y_speed = 3 * randomDirection();
+      this.x = 360;
+      this.y = 300;
+    } // The player has scored
+    else if (this.x > width) {
+      this.x_speed = -5; // Serve the ball to the player
+      this.y_speed = 3 * randomDirection();
+      this.x = 340;
+      this.y = 300;
     }
   };
 }
