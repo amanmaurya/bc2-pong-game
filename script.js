@@ -1,5 +1,4 @@
-// Call a specified function to
-// update the animation before next repaint
+// Call a specified function to update the animation before next repaint
 // Optimized by the browser
 var animate = window.requestAnimationFrame ||
               window.webkitRequestAnimationFrame ||
@@ -33,7 +32,10 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 10;
-  this.x_speed = 5; // Horizontal speed
+
+  // Horizontal speed
+  // Choose the starting direction randomly
+  this.x_speed = 5 * randomDirection();
   this.y_speed = 1; // Vertical speed
 
   this.render = function() {
@@ -43,9 +45,14 @@ function Ball(x, y) {
     ctx.fill();
   };
 
-  this.updatePosition = function() {
+  this.updatePosition = function(paddle1, paddle2) {
     this.x += this.x_speed;
     this.y += this.y_speed;
+
+    var top_y = this.y - this.radius;
+    var right_x = this.x + this.radius;
+    var bottom_y = this.y + this.radius;
+    var left_x = this.x - this.radius;
 
     // Hitting the top boundary
     if (this.y - 10 < 0) {
@@ -72,6 +79,29 @@ function Ball(x, y) {
       this.x = 340;
       this.y = 300;
     }
+
+    // If the ball is in the left half of the table
+    if (right_x < (width / 2)) {
+      // The ball has not yet passed the paddle
+      // The ball has made contact with the paddle
+      // The topmost side of the ball is in the range of the paddle
+      // The bottom side of the ball is in the range of the paddle
+      if (right_x > paddle1.x && left_x < (paddle1.x + paddle1.width)
+        && top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y)
+      {
+        this.x_speed = 5;
+        this.y_speed += (paddle1.y_speed / 2);
+        this.x += this.x_speed;
+      }
+    } else { // The ball is in the right half of the table
+      if (right_x > paddle2.x  && left_x < (paddle2.x + paddle2.width)
+        && top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y)
+      {
+        this.x_speed = -5;
+        this.y_speed += (paddle2.y_speed / 2);
+        this.x += this.x_speed;
+      }
+    }
   };
 }
 
@@ -80,6 +110,8 @@ function Paddle(x, y, wide, long) {
   this.y = y;
   this.width = wide;
   this.height = long;
+  this.x_speed = 0;
+  this.y_speed = 0;
 
   this.render = function() {
     ctx.fillStyle = '#ffffff';
@@ -93,9 +125,11 @@ function Paddle(x, y, wide, long) {
     // Top of the board
     if (this.y < 0) {
       this.y = 0;
+      this.y_speed = 0; // The paddle is stagnant
     } // Bottom of the board
     else if (this.y + this.height > height) {
       this.y = height - this.height;
+      this.y_speed = 0;
     }
   };
 
@@ -130,7 +164,7 @@ function initialize() {
 }
 
 var update = function() {
-  ball.updatePosition();
+  ball.updatePosition(player, computer);
   player.updatePosition();
 };
 
@@ -150,11 +184,9 @@ window.addEventListener('keydown', function(event) {
   switch (event.key) {
     case 'ArrowUp':
       keysDown.ArrowUp = true;
-      console.log(keysDown);
       break;
     case 'ArrowDown':
       keysDown.ArrowDown = true;
-      console.log(keysDown);
       break;
     default:
       return; // Do nothing
