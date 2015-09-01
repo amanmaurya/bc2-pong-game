@@ -8,10 +8,10 @@ var animate = window.requestAnimationFrame ||
                 window.setTimeout(callback, 1000 / 60);
               };
 
-var c = document.getElementById('myCanvas');
-var ctx = c.getContext('2d');
-var width = c.width;
-var height = c.height;
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+var width = canvas.width;
+var height = canvas.height;
 var middle = ((width - 5) / 2);
 var keysDown = {};
 
@@ -32,7 +32,7 @@ function Ball(x, y) {
     ctx.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
     ctx.fillStyle = '#00FFFF';
     ctx.fill();
-  }
+  };
 
   this.updatePosition = function() {
     this.x += this.x_speed;
@@ -49,7 +49,7 @@ function Ball(x, y) {
       this.y = height - 10; // Set the new position
       this.y_speed = -this.y_speed; // Reverse direction
     }
-  }
+  };
 }
 
 function Paddle(x, y, wide, long) {
@@ -61,7 +61,7 @@ function Paddle(x, y, wide, long) {
   this.render = function() {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(this.x, this.y, this.width, this.height);
-  }
+  };
 
   this.move = function(x, y) {
     this.x += x;
@@ -74,17 +74,15 @@ function Paddle(x, y, wide, long) {
     else if (this.y + this.height > height) {
       this.y = height - this.height;
     }
-  }
+  };
 
   this.updatePosition = function() {
-    for (var key in keysDown) {
-      if (keysDown['ArrowUp'] === true) {
-        this.move(0, -5);
-      } else if (keysDown['ArrowDown'] === true) {
-        this.move(0, 5);
-      }
+    if (keysDown.ArrowUp === true) {
+      this.move(0, -5);
+    } else if (keysDown.ArrowDown === true) {
+      this.move(0, 5);
     }
-  }
+  };
 }
 
 // Draws the initial screen
@@ -119,7 +117,7 @@ function main() {
 
   // Call animation function before the next repaint
   animate(main);
-};
+}
 
 window.onload = function() {
   animate(main);
@@ -128,11 +126,11 @@ window.onload = function() {
 window.addEventListener('keydown', function(event) {
   switch (event.key) {
     case 'ArrowUp':
-      keysDown['ArrowUp'] = true;
+      keysDown.ArrowUp = true;
       console.log(keysDown);
       break;
     case 'ArrowDown':
-      keysDown['ArrowDown'] = true;
+      keysDown.ArrowDown = true;
       console.log(keysDown);
       break;
     default:
