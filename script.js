@@ -1,3 +1,13 @@
+// Call a specified function to
+// update the animation before next repaint
+// Optimized by the browser
+var animate = window.requestAnimationFrame ||
+              window.webkitRequestAnimationFrame ||
+              window.mozRequestAnimationFrame ||
+              function(callback) {
+                window.setTimeout(callback, 1000 / 60)
+              };
+
 var c = document.getElementById('myCanvas');
 var ctx = c.getContext('2d');
 var width = c.width;
@@ -13,7 +23,7 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 10;
-  this.x_speed = 3; // Horizontal speed
+  this.x_speed = 5; // Horizontal speed
   this.y_speed = 1; // Vertical speed
 
   this.render = function() {
@@ -68,8 +78,11 @@ var update = function() {
 function main() {
   initialize();
   update();
+
+  // Call animation function before the next repaint
+  animate(main);
 };
 
 window.onload = function() {
-  main();
+  animate(main);
 };
