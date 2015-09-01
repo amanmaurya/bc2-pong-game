@@ -15,8 +15,8 @@ var height = c.height;
 var middle = ((width - 5) / 2);
 
 // Create the paddles and ball objects
-var player = new Paddle(20, 100, 20, 100);
-var computer = new Paddle(660, 100, 20, 100);
+var player = new Paddle(20, 100, 20, 100); // Left Paddle
+var computer = new Paddle(660, 100, 20, 100); // Right paddle
 var ball = new Ball(360, 300);
 
 function Ball(x, y) {
@@ -36,6 +36,17 @@ function Ball(x, y) {
   this.updatePosition = function() {
     this.x += this.x_speed;
     this.y += this.y_speed;
+
+    // Hitting the top boundary
+    if (this.y - 10 < 0) {
+      this.y = 10; // Don't go beyond the boundary
+      this.y_speed = -this.y_speed; // Reverse the direction
+    }
+    // Hitting the bottom boundary
+    else if (this.y - 10 > height) {
+      this.y = height - 10; // Set the new position
+      this.y_speed = -this.y_speed; // Reverse direction
+    }
   }
 }
 
