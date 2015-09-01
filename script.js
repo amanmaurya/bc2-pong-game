@@ -66,6 +66,14 @@ function Paddle(x, y, wide, long) {
   this.move = function(x, y) {
     this.x += x;
     this.y += y;
+
+    // Top of the board
+    if (this.y < 0) {
+      this.y = 0;
+    } // Bottom of the board
+    else if (this.y + this.height > height) {
+      this.y = height - this.height;
+    }
   }
 
   this.updatePosition = function() {
