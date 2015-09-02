@@ -13,6 +13,7 @@ var width = canvas.width;
 var height = canvas.height;
 var middle = ((width - 5) / 2);
 var keysDown = {};
+var runAnimation = {value: true};
 
 // Create the paddles and ball objects
 var player = new Paddle(20, 100, 20, 100); // Left Paddle
@@ -70,12 +71,14 @@ function Ball(x, y) {
       this.y_speed = 3 * randomDirection();
       this.x = 360;
       this.y = 300;
+      paddle2.updateScore();
     } // The player has scored
     else if (this.x > width) {
       this.x_speed = -(Math.abs(this.x_speed)); // Serve the ball to the player
       this.y_speed = 3 * randomDirection();
       this.x = 340;
       this.y = 300;
+      paddle1.updateScore();
     }
 
     // If the ball is in the left half of the table
@@ -110,6 +113,7 @@ function Paddle(x, y, wide, long) {
   this.height = long;
   this.x_speed = 0;
   this.y_speed = 0;
+  this.score = 0;
 
   this.render = function() {
     ctx.fillStyle = '#ffffff';
@@ -159,6 +163,16 @@ function Paddle(x, y, wide, long) {
     } else if (this.y + this.height > height) {
       this.y = height - this.height;
     }
+  };
+
+  this.updateScore = function() {
+    this.score += 1;
+    if (this.score === 10) {
+      // Stop the animation
+      runAnimation.value = false;
+      gameOver(player, computer);
+    }
+    return this.score;
   }
 }
 
@@ -181,6 +195,12 @@ function initialize() {
   ctx.lineWidth = 5;
   ctx.lineTo(middle, height);
   ctx.stroke();
+
+  // Render the scores
+  ctx.fillStyle = '#66FF33';
+  ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
+  ctx.fillText(player.score, middle - 80, 80);
+  ctx.fillText(computer.score, middle + 50, 80);
 }
 
 var update = function() {
@@ -189,12 +209,27 @@ var update = function() {
   computer.update(ball);
 };
 
+var gameOver = function(player1, player2) {
+  initialize();
+  ctx.fillStyle = '#66FF33';
+  ctx.font = '40px "Comic Sans MS", cursive, sans-serif';
+  var win = player1.score > player2.score ? player1 : player2;
+
+  if (win.x < 100){ // The player on the left won
+    ctx.fillText("Player 1 wins", 100, 150);
+  } else {
+    ctx.fillText("Player 2 wins", middle + 40, 150);
+  }
+}
+
 function main() {
   initialize();
   update();
 
   // Call animation function before the next repaint
-  animate(main);
+  if(runAnimation.value) {
+    animate(main);
+  }
 }
 
 window.onload = function() {
