@@ -216,9 +216,9 @@ var gameOver = function(player1, player2) {
   var win = player1.score > player2.score ? player1 : player2;
 
   if (win.x < 100){ // The player on the left won
-    ctx.fillText("Player 1 wins", 50, 150);
+    ctx.fillText("YOU WIN!!", 50, 150);
   } else {
-    ctx.fillText("Player 2 wins", middle + 40, 150);
+    ctx.fillText("YOU LOSE :(", middle + 40, 150);
   }
 }
 
