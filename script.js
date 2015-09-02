@@ -211,14 +211,15 @@ var update = function() {
 
 var gameOver = function(player1, player2) {
   initialize();
-  ctx.fillStyle = '#66FF33';
   ctx.font = '40px "Comic Sans MS", cursive, sans-serif';
   var win = player1.score > player2.score ? player1 : player2;
 
-  if (win.x < 100){ // The player on the left won
+  if (win.x < 100){
+    ctx.fillStyle = '#66FF33';
     ctx.fillText("YOU WIN!!", 50, 150);
   } else {
-    ctx.fillText("YOU LOSE :(", middle + 40, 150);
+    ctx.fillStyle = '#FF0000';
+    ctx.fillText("YOU LOSE :(", 50, 150);
   }
 }
 
