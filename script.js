@@ -56,12 +56,12 @@ function Ball(x, y) {
     var left_x = this.x - this.radius;
 
     // Hitting the top boundary
-    if (this.y - 10 < 0) {
-      this.y = 10; // Don't go beyond the boundary
+    if (this.y - this.radius < 0) {
+      this.y = this.radius; // Don't go beyond the boundary
       this.y_speed = -this.y_speed; // Reverse the direction
     } // Hitting the bottom boundary
-    else if (this.y + 10 > height) {
-      this.y = height - 10; // Set the new position
+    else if (this.y + this.radius > height) {
+      this.y = height - this.radius; // Set the new position
       this.y_speed = -this.y_speed; // Reverse direction
     }
 
