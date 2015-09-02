@@ -36,7 +36,7 @@ function Ball(x, y) {
   // Horizontal speed
   // Choose the starting direction randomly
   this.x_speed = 5 * randomDirection();
-  this.y_speed = 1; // Vertical speed
+  this.y_speed = 3 * randomDirection(); // Vertical speed
 
   this.render = function() {
     ctx.beginPath();
