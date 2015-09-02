@@ -66,13 +66,13 @@ function Ball(x, y) {
 
     // If the computer has scored
     if (this.x < 0) {
-      this.x_speed = 5; // Serve the ball to the computer
+      this.x_speed = Math.abs(this.x_speed); // Serve the ball to the computer
       this.y_speed = 3 * randomDirection();
       this.x = 360;
       this.y = 300;
     } // The player has scored
     else if (this.x > width) {
-      this.x_speed = -5; // Serve the ball to the player
+      this.x_speed = -(Math.abs(this.x_speed)); // Serve the ball to the player
       this.y_speed = 3 * randomDirection();
       this.x = 340;
       this.y = 300;
@@ -87,7 +87,7 @@ function Ball(x, y) {
       if (right_x > paddle1.x && left_x < (paddle1.x + paddle1.width)
         && top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y)
       {
-        this.x_speed = 5;
+        this.x_speed = Math.abs(this.x_speed);
         this.y_speed += (paddle1.y_speed / 2);
         this.x += this.x_speed;
       }
@@ -95,7 +95,7 @@ function Ball(x, y) {
       if (right_x > paddle2.x  && left_x < (paddle2.x + paddle2.width)
         && top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y)
       {
-        this.x_speed = -5;
+        this.x_speed = -(Math.abs(this.x_speed));
         this.y_speed += (paddle2.y_speed / 2);
         this.x += this.x_speed;
       }
@@ -145,6 +145,7 @@ function Paddle(x, y, wide, long) {
 
     // Get the position of the ball relative to the paddle
     var diff = -((this.y + (this.height / 2)) - y_position);
+
     // If the ball is above the paddle
     if (diff < 0 && diff < -4) {
       diff = -3; // max speed up
