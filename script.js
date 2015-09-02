@@ -58,23 +58,23 @@ function Ball(x, y) {
     // Hitting the top boundary
     if (this.y - this.radius < 0) {
       this.y = this.radius; // Don't go beyond the boundary
-      this.y_speed = -this.y_speed; // Reverse the direction
+      this.y_speed = -this.y_speed + Math.random(); // Reverse the direction
     } // Hitting the bottom boundary
     else if (this.y + this.radius > height) {
       this.y = height - this.radius; // Set the new position
-      this.y_speed = -this.y_speed; // Reverse direction
+      this.y_speed = -this.y_speed - Math.random(); // Reverse direction
     }
 
     // If the computer has scored
     if (this.x < 0) {
-      this.x_speed = Math.abs(this.x_speed); // Serve the ball to the computer
+      this.x_speed = 5; // Serve the ball to the computer
       this.y_speed = 3 * randomDirection();
       this.x = 360;
       this.y = 300;
       paddle2.updateScore();
     } // The player has scored
     else if (this.x > width) {
-      this.x_speed = -(Math.abs(this.x_speed)); // Serve the ball to the player
+      this.x_speed = -5; // Serve the ball to the player
       this.y_speed = 3 * randomDirection();
       this.x = 340;
       this.y = 300;
@@ -90,7 +90,7 @@ function Ball(x, y) {
       if (right_x > paddle1.x && left_x < (paddle1.x + paddle1.width)
         && top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y)
       {
-        this.x_speed = Math.abs(this.x_speed);
+        this.x_speed = Math.abs(this.x_speed) + Math.random();
         this.y_speed += (paddle1.y_speed / 2);
         this.x += this.x_speed;
       }
@@ -98,7 +98,7 @@ function Ball(x, y) {
       if (right_x > paddle2.x  && left_x < (paddle2.x + paddle2.width)
         && top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y)
       {
-        this.x_speed = -(Math.abs(this.x_speed));
+        this.x_speed = -(Math.abs(this.x_speed)) - Math.random();
         this.y_speed += (paddle2.y_speed / 2);
         this.x += this.x_speed;
       }
@@ -152,9 +152,9 @@ function Paddle(x, y, wide, long) {
 
     // If the ball is above the paddle
     if (diff < 0 && diff < -4) {
-      diff = -3; // max speed up
+      diff = -5; // max speed up
     } else if (diff > 0 && diff > 4) {
-      diff = 3; // max speed down
+      diff = 5; // max speed down
     }
 
     this.move(0, diff);
@@ -216,7 +216,7 @@ var gameOver = function(player1, player2) {
   var win = player1.score > player2.score ? player1 : player2;
 
   if (win.x < 100){ // The player on the left won
-    ctx.fillText("Player 1 wins", 100, 150);
+    ctx.fillText("Player 1 wins", 50, 150);
   } else {
     ctx.fillText("Player 2 wins", middle + 40, 150);
   }
