@@ -58,9 +58,7 @@ function Ball(x, y) {
     if (this.y - 10 < 0) {
       this.y = 10; // Don't go beyond the boundary
       this.y_speed = -this.y_speed; // Reverse the direction
-    }
-
-    // Hitting the bottom boundary
+    } // Hitting the bottom boundary
     else if (this.y - 10 > height) {
       this.y = height - 10; // Set the new position
       this.y_speed = -this.y_speed; // Reverse direction
@@ -140,6 +138,27 @@ function Paddle(x, y, wide, long) {
       this.move(0, 5);
     }
   };
+
+  // Computer AI
+  this.update = function(ball) {
+    var y_position = ball.y;
+
+    // Get the position of the ball relative to the paddle
+    var diff = -((this.y + (this.height / 2)) - y_position);
+    // If the ball is above the paddle
+    if (diff < 0 && diff < -4) {
+      diff = -3; // max speed up
+    } else if (diff > 0 && diff > 4) {
+      diff = 3; // max speed down
+    }
+
+    this.move(0, diff);
+    if (this.y < 0) {
+      this.y = 0;
+    } else if (this.y + this.height > height) {
+      this.y = height - this.height;
+    }
+  }
 }
 
 // Draws the initial screen
@@ -166,6 +185,7 @@ function initialize() {
 var update = function() {
   ball.updatePosition(player, computer);
   player.updatePosition();
+  computer.update(ball);
 };
 
 function main() {
