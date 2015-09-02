@@ -59,7 +59,7 @@ function Ball(x, y) {
       this.y = 10; // Don't go beyond the boundary
       this.y_speed = -this.y_speed; // Reverse the direction
     } // Hitting the bottom boundary
-    else if (this.y - 10 > height) {
+    else if (this.y + 10 > height) {
       this.y = height - 10; // Set the new position
       this.y_speed = -this.y_speed; // Reverse direction
     }
