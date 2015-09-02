@@ -136,9 +136,9 @@ function Paddle(x, y, wide, long) {
   };
 
   this.updatePosition = function() {
-    if (keysDown.ArrowUp === true) {
+    if (keysDown[38] === true) {
       this.move(0, -5);
-    } else if (keysDown.ArrowDown === true) {
+    } else if (keysDown[40] === true) {
       this.move(0, 5);
     }
   };
@@ -238,12 +238,12 @@ window.onload = function() {
 };
 
 window.addEventListener('keydown', function(event) {
-  switch (event.key) {
-    case 'ArrowUp':
-      keysDown.ArrowUp = true;
+  switch (event.keyCode) {
+    case 38: // Down Arrow
+      keysDown[event.keyCode] = true;
       break;
-    case 'ArrowDown':
-      keysDown.ArrowDown = true;
+    case 40: // Up Arrow
+      keysDown[event.keyCode] = true;
       break;
     default:
       return; // Do nothing
@@ -251,5 +251,5 @@ window.addEventListener('keydown', function(event) {
 });
 
 window.addEventListener('keyup', function(event) {
-  delete keysDown[event.key];
+  delete keysDown[event.keyCode];
 });
