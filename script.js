@@ -19,6 +19,33 @@ var runAnimation = {value: true};
 var player = new Paddle(20, 100, 20, 100); // Left Paddle
 var computer = new Paddle(660, 100, 20, 100); // Right paddle
 var ball = new Ball(360, 300);
+var start = new startBtn();
+
+// Global events
+window.addEventListener('keydown', function(event) {
+  switch (event.keyCode) {
+    case 38: // Down Arrow
+      keysDown[event.keyCode] = true;
+      break;
+    case 40: // Up Arrow
+      keysDown[event.keyCode] = true;
+      break;
+    default:
+      return; // Do nothing
+  }
+});
+
+window.addEventListener('keyup', function(event) {
+  delete keysDown[event.keyCode];
+});
+
+// Add event listener to the canvas
+canvas.addEventListener('click', function(event) {
+    // Check if the start button has been clicked
+    if (event.pageX >= start.x && event.pageY <= start.y + start.h) {
+      animate(main);
+    }
+  }, false);
 
 // Determines whether the ball is served heading up or down
 function randomDirection() {
@@ -28,6 +55,25 @@ function randomDirection() {
     return 1;
   }
 }
+
+function startBtn() {
+  this.x = width / 2 - 50,
+  this.y = height / 2 - 25,
+  this.w = 100,
+  this.h = 50,
+
+  this.render = function() {
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = '2';
+    ctx.strokeRect(this.x, this.y, this.w, this.h);
+
+    ctx.font = '18px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStlye = 'white';
+    ctx.fillText('Start', width / 2, height / 2);
+  };
+};
 
 function Ball(x, y) {
   this.x = x;
@@ -233,23 +279,19 @@ function main() {
   }
 }
 
+function drawScreen() {
+  // Draw the canvas background
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, width, height);
+
+  // Render the paddles
+  computer.render();
+  player.render();
+
+  // Draw the start button
+  start.render();
+}
+
 window.onload = function() {
-  animate(main);
+  drawScreen();
 };
-
-window.addEventListener('keydown', function(event) {
-  switch (event.keyCode) {
-    case 38: // Down Arrow
-      keysDown[event.keyCode] = true;
-      break;
-    case 40: // Up Arrow
-      keysDown[event.keyCode] = true;
-      break;
-    default:
-      return; // Do nothing
-  }
-});
-
-window.addEventListener('keyup', function(event) {
-  delete keysDown[event.keyCode];
-});
