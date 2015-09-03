@@ -347,14 +347,25 @@ var gameOver = function(players) {
   // Get the player with the highest score
   var win = players[0].score > players[1].score ? players[0] : players[1];
 
-  if (win.x < 100) {
-    ctx.fillStyle = '#66FF33';
-    ctx.fillText('YOU WIN!!', middle, 150);
-    success.play();
-  } else {
-    ctx.fillStyle = '#FF0000';
-    ctx.fillText('YOU LOSE :(', middle, 150);
-    lose.play();
+  // One player mode
+  if (players[0].name === 'droid' || players[1].name === 'droid'){
+    if (win.x < 100) {
+      ctx.fillStyle = '#66FF33';
+      ctx.fillText('YOU WIN!!', middle, 150);
+      success.play();
+    } else {
+      ctx.fillStyle = '#FF0000';
+      ctx.fillText('YOU LOSE :(', middle, 150);
+      lose.play();
+    }
+  } else { // Two player mode
+    if (win.x < 100) {
+      ctx.fillStyle = '#66FF33';
+      ctx.fillText('Player 1 wins', middle, 150);
+    } else {
+      ctx.fillStyle = '#66FF33';
+      ctx.fillText('Player 2 wins', middle, 150);
+    }
   }
 }
 
