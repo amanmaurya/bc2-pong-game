@@ -322,6 +322,9 @@ function main() {
 }
 
 function drawScreen(button) {
+  var line1 = "Control the paddle on the left by using the up and down arrows.";
+  var line2 = "The first player to reach a score of 10 wins the game.";
+  var line3 = "GOOD LUCK!";
   // Draw the canvas background
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
@@ -332,6 +335,18 @@ function drawScreen(button) {
 
   // Draw the start/restart button
   button.render();
+
+  // Render Instructions
+  ctx.font = '30px Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStlye = 'white';
+  ctx.fillText("INSTRUCTIONS:", width / 2, (height / 2) + 70);
+
+  ctx.font = '20px Arial, sans-serif';
+  ctx.fillText(line1, width / 2, (height / 2) + 100);
+  ctx.fillText(line2, width / 2, (height / 2) + 130);
+  ctx.fillText(line3, width / 2, (height / 2) + 160);
 }
 
 window.onload = function() {
