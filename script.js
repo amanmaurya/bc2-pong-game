@@ -336,6 +336,11 @@ function drawScreen(button) {
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
 
+  ctx.fillStyle = '#CCFFFF';
+  ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('PONG', middle, 150);
+
   // Render the paddles
   computer.render();
   player.render();
