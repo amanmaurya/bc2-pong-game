@@ -19,7 +19,8 @@ var runAnimation = {value: true};
 var player = new Paddle(20, 100, 20, 100); // Left Paddle
 var computer = new Paddle(660, 100, 20, 100); // Right paddle
 var ball = new Ball(360, 300);
-var start = new startBtn();
+var start = new Button('Start');
+var end = new Button('Restart');
 
 // Global events
 window.addEventListener('keydown', function(event) {
@@ -56,7 +57,7 @@ function randomDirection() {
   }
 }
 
-function startBtn() {
+function Button(text) {
   this.x = width / 2 - 50,
   this.y = height / 2 - 25,
   this.w = 100,
@@ -71,7 +72,7 @@ function startBtn() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStlye = 'white';
-    ctx.fillText('Start', width / 2, height / 2);
+    ctx.fillText(text, width / 2, height / 2);
   };
 };
 
@@ -216,7 +217,7 @@ function Paddle(x, y, wide, long) {
     if (this.score === 10) {
       // Stop the animation
       runAnimation.value = false;
-      gameOver(player, computer);
+      gameOver();
     }
     return this.score;
   }
@@ -255,10 +256,9 @@ var update = function() {
   computer.update(ball);
 };
 
-var gameOver = function(player1, player2) {
+var gameOver = function() {
   initialize();
   ctx.font = '40px "Comic Sans MS", cursive, sans-serif';
-  var win = player1.score > player2.score ? player1 : player2;
 
   if (win.x < 100){
     ctx.fillStyle = '#66FF33';
@@ -279,7 +279,7 @@ function main() {
   }
 }
 
-function drawScreen() {
+function drawScreen(button) {
   // Draw the canvas background
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
@@ -288,10 +288,10 @@ function drawScreen() {
   computer.render();
   player.render();
 
-  // Draw the start button
-  start.render();
+  // Draw the start/restart button
+  button.render();
 }
 
 window.onload = function() {
-  drawScreen();
+  drawScreen(start);
 };
