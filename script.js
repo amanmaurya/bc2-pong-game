@@ -24,8 +24,8 @@ var paddles = [];
 // Create the ball and start button objects
 var ball = new Ball(360, 300);
 var restart = new Button('Restart', width / 2 - 50, height / 2 - 25);
-var onePlayer = new Button('1 Player', width / 2 - 250, height / 2 - 25);
-var twoPlayer = new Button('2 Players', width / 2 + 150, height / 2 - 25);
+var onePlayer = new Button('1 Player', width / 2 - 250, height / 2 - 50);
+var twoPlayer = new Button('2 Players', width / 2 + 150, height / 2 - 50);
 
 // Global events
 window.addEventListener('keydown', function(event) {
@@ -380,9 +380,10 @@ function main() {
 }
 
 function drawScreen(buttons) {
-  var line1 = 'Control the paddle on the left by using the up and down arrows.';
-  var line2 = 'The first player to reach a score of 10 wins the game.';
-  var line3 = 'GOOD LUCK!';
+  var line1 = 'Control the paddle on the left using keys A and Z';
+  var line2 = 'Control the paddle on the right using the up and down arrows.';
+  var line3 = 'The first player to reach a score of 10 wins the game.';
+  var line4 = 'GOOD LUCK!';
 
   // Draw the canvas background
   ctx.fillStyle = '#000000';
@@ -404,16 +405,24 @@ function drawScreen(buttons) {
   }
 
   // Render Instructions
-  ctx.font = '30px Arial, sans-serif';
+  ctx.font = '25px Arial, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStlye = 'white';
-  ctx.fillText('INSTRUCTIONS:', width / 2, (height / 2) + 70);
+
+  ctx.fillText('SINGLE PLAYER MODE:', width / 2, (height / 2) + 70);
 
   ctx.font = '20px Arial, sans-serif';
   ctx.fillText(line1, width / 2, (height / 2) + 100);
-  ctx.fillText(line2, width / 2, (height / 2) + 130);
-  ctx.fillText(line3, width / 2, (height / 2) + 160);
+
+  ctx.font = '25px Arial, sans-serif';
+  ctx.fillText('2 - PLAYER MODE:', width / 2, (height / 2) + 140);
+
+  ctx.font = '20px Arial, sans-serif';
+  ctx.fillText(line1, width / 2, (height / 2) + 170);
+  ctx.fillText(line2, width / 2, (height / 2) + 200);
+  ctx.fillText(line3, width / 2, (height / 2) + 230);
+  ctx.fillText(line4, width / 2, (height / 2) + 280);
 }
 
 window.onload = function() {
