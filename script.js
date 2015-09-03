@@ -22,8 +22,9 @@ var runAnimation = {value: true};
 var paddles = [];
 
 // Create the paddles and ball objects
-var player = new Paddle(20, 100, 20, 100); // Left Paddle
-var computer = new Paddle(660, 100, 20, 100); // Right paddle
+var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
+// var computer = new Paddle('droid', 660, 100, 20, 100); // Right paddle
+var computer = new Paddle('human2', 660, 100, 20, 100); // Left Paddle
 
 // Add the paddles to the array
 paddles.push(player, computer);
@@ -39,6 +40,12 @@ window.addEventListener('keydown', function(event) {
       keysDown[event.keyCode] = true;
       break;
     case 40: // Up Arrow
+      keysDown[event.keyCode] = true;
+      break;
+    case 65: // a
+      keysDown[event.keyCode] = true;
+      break;
+    case 90: // z
       keysDown[event.keyCode] = true;
       break;
     default:
@@ -195,7 +202,8 @@ function Ball(x, y) {
   };
 }
 
-function Paddle(x, y, wide, long) {
+function Paddle(name, x, y, wide, long) {
+  this.name = name;
   this.x = x;
   this.y = y;
   this.width = wide;
@@ -225,10 +233,20 @@ function Paddle(x, y, wide, long) {
   };
 
   this.updatePosition = function() {
-    if (keysDown[38] === true) {
-      this.move(0, -5);
-    } else if (keysDown[40] === true) {
-      this.move(0, 5);
+    if (this.name !== 'droid') {
+      if (this.name.indexOf('2') !== -1 ) { // Right Paddle
+        if (keysDown[38] === true) {
+          this.move(0, -5);
+        } else if (keysDown[40] === true) {
+          this.move(0, 5);
+        }
+      } else {
+          if (keysDown[65] === true) { // A
+          this.move(0, -5);
+        } else if (keysDown[90] === true) { // Z
+          this.move(0, 5);
+        }
+      }
     }
   };
 
@@ -273,8 +291,10 @@ function initialize() {
   ctx.fillRect(0, 0, width, height);
 
   // Render the paddles
-  computer.render();
-  player.render();
+  for (var i = paddles.length - 1; i >= 0; i--) {
+    paddles[i].render();
+  }
+
   ball.render();
 
   // Render the line boundary
@@ -289,14 +309,21 @@ function initialize() {
   // Render the scores
   ctx.fillStyle = '#66FF33';
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
-  ctx.fillText(player.score, middle - 80, 80);
-  ctx.fillText(computer.score, middle + 80, 80);
+  ctx.fillText(paddles[0].score, middle - 80, 80);
+  ctx.fillText(paddles[1].score, middle + 80, 80);
 }
 
 var update = function() {
-  ball.updatePosition(player, computer);
-  player.updatePosition();
-  computer.update(ball);
+  ball.updatePosition(paddles[0], paddles[1]);
+
+  for (var i = 0; i < paddles.length; i++) {
+    if (paddles[i].name === 'droid') {
+      paddles[i].update(ball);
+    } else {
+      paddles[i].updatePosition();
+    }
+  }
+
 };
 
 var gameOver = function(players) {
@@ -342,8 +369,9 @@ function drawScreen(button) {
   ctx.fillText('PONG', middle, 150);
 
   // Render the paddles
-  computer.render();
-  player.render();
+  for (var i = paddles.length - 1; i >= 0; i--) {
+    paddles[i].render();
+  };
 
   // Draw the start/restart button
   button.render();
