@@ -21,15 +21,11 @@ var keysDown = {};
 var runAnimation = {value: true};
 var paddles = [];
 
-// Create the paddles and ball objects
-var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
-// var computer = new Paddle('droid', 660, 100, 20, 100); // Right paddle
-var computer = new Paddle('human2', 660, 100, 20, 100); // Left Paddle
-
+// Create the ball and start button objects
 var ball = new Ball(360, 300);
 var restart = new Button('Restart', width / 2 - 50, height / 2 - 25);
-var onePlayer = new Button('One Player', width / 2 - 250, height / 2 - 25);
-var twoPlayer = new Button('Two Players', width / 2 + 150, height / 2 - 25);
+var onePlayer = new Button('1 Player', width / 2 - 250, height / 2 - 25);
+var twoPlayer = new Button('2 Players', width / 2 + 150, height / 2 - 25);
 
 // Global events
 window.addEventListener('keydown', function(event) {
@@ -68,6 +64,20 @@ canvas.addEventListener('mousedown', function(event) {
       && coords.x <= onePlayer.x + onePlayer.w && coords.y >= onePlayer.y) {
       var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
       var computer = new Paddle('droid', 660, 100, 20, 100); // Right paddle
+      // Add the paddles to the array
+      paddles.push(player, computer);
+      animate(main);
+
+      // Delete the choice buttons
+      // Necessary so as to remove the attached event handlers
+      onePlayer = {};
+      twoPlayer = {};
+    }
+
+    else if (coords.x >= twoPlayer.x && coords.y <= twoPlayer.y + twoPlayer.h
+      && coords.x <= twoPlayer.x + twoPlayer.w && coords.y >= twoPlayer.y) {
+      var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
+      var computer = new Paddle('human2', 660, 100, 20, 100); // Right paddle
       // Add the paddles to the array
       paddles.push(player, computer);
       animate(main);
