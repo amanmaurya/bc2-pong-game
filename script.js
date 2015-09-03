@@ -27,10 +27,9 @@ var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
 var computer = new Paddle('human2', 660, 100, 20, 100); // Left Paddle
 
 var ball = new Ball(360, 300);
-var start = new Button('Start', width / 2 - 50, height / 2 - 25);
 var restart = new Button('Restart', width / 2 - 50, height / 2 - 25);
 var onePlayer = new Button('One Player', width / 2 - 250, height / 2 - 25);
-var twoPlayer = new Button('Two Players', width / 2, height / 2 - 25);
+var twoPlayer = new Button('Two Players', width / 2 + 150, height / 2 - 25);
 
 // Global events
 window.addEventListener('keydown', function(event) {
@@ -73,9 +72,10 @@ canvas.addEventListener('mousedown', function(event) {
       paddles.push(player, computer);
       animate(main);
 
-      // Delete the start button
-      // Necessary so as to remove the start button click handlers
-      start = {};
+      // Delete the choice buttons
+      // Necessary so as to remove the attached event handlers
+      onePlayer = {};
+      twoPlayer = {};
     }
 
     // If the Game is over & the restart button has been clicked
