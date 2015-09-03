@@ -32,6 +32,8 @@ paddles.push(player, computer);
 var ball = new Ball(360, 300);
 var start = new Button('Start', width / 2 - 50, height / 2 - 25);
 var restart = new Button('Restart', width / 2 - 50, height / 2 - 25);
+var onePlayer = new Button('One Player', width / 2 - 250, height / 2 - 25);
+var twoPlayer = new Button('Two Players', width / 2, height / 2 - 25);
 
 // Global events
 window.addEventListener('keydown', function(event) {
@@ -392,5 +394,5 @@ function drawScreen(buttons) {
 }
 
 window.onload = function() {
-  drawScreen([start]);
+  drawScreen([onePlayer, twoPlayer]);
 };
