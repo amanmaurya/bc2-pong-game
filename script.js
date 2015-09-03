@@ -57,8 +57,9 @@ canvas.addEventListener('mousedown', function(event) {
     var rect = canvas.getBoundingClientRect();
     var coords = {
           x: event.clientX - rect.left,
-          y: event.clientY - rect.top
+          y: event.clientY - rect.top,
         };
+
     // If one player mode is chosen
     if (coords.x >= onePlayer.x && coords.y <= onePlayer.y + onePlayer.h
       && coords.x <= onePlayer.x + onePlayer.w && coords.y >= onePlayer.y) {
@@ -72,9 +73,7 @@ canvas.addEventListener('mousedown', function(event) {
       // Necessary so as to remove the attached event handlers
       onePlayer = {};
       twoPlayer = {};
-    }
-
-    else if (coords.x >= twoPlayer.x && coords.y <= twoPlayer.y + twoPlayer.h
+    } else if (coords.x >= twoPlayer.x && coords.y <= twoPlayer.y + twoPlayer.h
       && coords.x <= twoPlayer.x + twoPlayer.w && coords.y >= twoPlayer.y) {
       var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
       var computer = new Paddle('human2', 660, 100, 20, 100); // Right paddle
@@ -129,7 +128,7 @@ function Button(text, x, y) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStlye = 'white';
-    ctx.fillText(text, this.x + this.w/2, this.y + this.h/2);
+    ctx.fillText(text, this.x + this.w / 2, this.y + this.h / 2);
   };
 };
 
@@ -248,14 +247,14 @@ function Paddle(name, x, y, wide, long) {
 
   this.updatePosition = function() {
     if (this.name !== 'droid') {
-      if (this.name.indexOf('2') !== -1 ) { // Right Paddle
+      if (this.name.indexOf('2') !== -1) { // Right Paddle
         if (keysDown[38] === true) {
           this.move(0, -5);
         } else if (keysDown[40] === true) {
           this.move(0, 5);
         }
       } else {
-          if (keysDown[65] === true) { // A
+        if (keysDown[65] === true) { // A
           this.move(0, -5);
         } else if (keysDown[90] === true) { // Z
           this.move(0, 5);
@@ -370,9 +369,10 @@ function main() {
 }
 
 function drawScreen(buttons) {
-  var line1 = "Control the paddle on the left by using the up and down arrows.";
-  var line2 = "The first player to reach a score of 10 wins the game.";
-  var line3 = "GOOD LUCK!";
+  var line1 = 'Control the paddle on the left by using the up and down arrows.';
+  var line2 = 'The first player to reach a score of 10 wins the game.';
+  var line3 = 'GOOD LUCK!';
+
   // Draw the canvas background
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
@@ -397,7 +397,7 @@ function drawScreen(buttons) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStlye = 'white';
-  ctx.fillText("INSTRUCTIONS:", width / 2, (height / 2) + 70);
+  ctx.fillText('INSTRUCTIONS:', width / 2, (height / 2) + 70);
 
   ctx.font = '20px Arial, sans-serif';
   ctx.fillText(line1, width / 2, (height / 2) + 100);
