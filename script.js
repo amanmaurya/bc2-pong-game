@@ -21,6 +21,32 @@ var computer = new Paddle(660, 100, 20, 100); // Right paddle
 var ball = new Ball(360, 300);
 var start = new startBtn();
 
+// Global events
+window.addEventListener('keydown', function(event) {
+  switch (event.keyCode) {
+    case 38: // Down Arrow
+      keysDown[event.keyCode] = true;
+      break;
+    case 40: // Up Arrow
+      keysDown[event.keyCode] = true;
+      break;
+    default:
+      return; // Do nothing
+  }
+});
+
+window.addEventListener('keyup', function(event) {
+  delete keysDown[event.keyCode];
+});
+
+// Add event listener to the canvas
+canvas.addEventListener('click', function(event) {
+    // Check if the start button has been clicked
+    if (event.pageX >= start.x && event.pageY <= start.y + start.h) {
+      animate(main);
+    }
+  }, false);
+
 // Determines whether the ball is served heading up or down
 function randomDirection() {
   if (Math.random() > 0.5) {
@@ -31,12 +57,12 @@ function randomDirection() {
 }
 
 function startBtn() {
-  this.w = 100,
-  this.h = 50,
   this.x = width / 2 - 50,
   this.y = height / 2 - 25,
+  this.w = 100,
+  this.h = 50,
 
-  this.draw = function() {
+  this.render = function() {
     ctx.strokeStyle = 'white';
     ctx.lineWidth = '2';
     ctx.strokeRect(this.x, this.y, this.w, this.h);
@@ -262,26 +288,10 @@ function drawScreen() {
   computer.render();
   player.render();
 
-  start.draw();
+  // Draw the start button
+  start.render();
 }
 
 window.onload = function() {
   drawScreen();
 };
-
-window.addEventListener('keydown', function(event) {
-  switch (event.keyCode) {
-    case 38: // Down Arrow
-      keysDown[event.keyCode] = true;
-      break;
-    case 40: // Up Arrow
-      keysDown[event.keyCode] = true;
-      break;
-    default:
-      return; // Do nothing
-  }
-});
-
-window.addEventListener('keyup', function(event) {
-  delete keysDown[event.keyCode];
-});
