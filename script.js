@@ -380,7 +380,7 @@ function drawScreen(buttons) {
   ctx.fillStyle = '#CCFFFF';
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('PONG', middle, 150);
+  ctx.fillText('PONG', middle, 70);
 
   // Render the paddles
   for (var i = paddles.length - 1; i >= 0; i--) {
