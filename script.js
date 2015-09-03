@@ -341,7 +341,7 @@ var update = function() {
 };
 
 var gameOver = function(players) {
-  drawScreen(restart);
+  drawScreen([restart]);
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
   ctx.textAlign = 'center';
 
