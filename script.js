@@ -7,6 +7,11 @@ var animate = window.requestAnimationFrame ||
                 window.setTimeout(callback, 1000 / 60);
               };
 
+var contact = document.getElementById('paddle');
+var score_against = document.getElementById('score_against');
+var score_for = document.getElementById('score_for');
+var success = document.getElementById('success');
+var lose = document.getElementById('lose');
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 var width = canvas.width;
@@ -142,6 +147,7 @@ function Ball(x, y) {
       this.y_speed = 3 * randomDirection();
       this.x = 360;
       this.y = 300;
+      score_against.play();
       paddle2.updateScore();
     } // The player has scored
     else if (this.x > width) {
@@ -149,6 +155,7 @@ function Ball(x, y) {
       this.y_speed = 3 * randomDirection();
       this.x = 340;
       this.y = 300;
+      score_for.play();
       paddle1.updateScore();
     }
 
@@ -164,6 +171,8 @@ function Ball(x, y) {
         this.x_speed = Math.abs(this.x_speed) + Math.random();
         this.y_speed += (paddle1.y_speed / 2);
         this.x += this.x_speed;
+        contact.currentTime = 0;
+        contact.play();
       }
     } else { // The ball is in the right half of the table
       if (right_x > paddle2.x  && left_x < (paddle2.x + paddle2.width)
@@ -172,6 +181,8 @@ function Ball(x, y) {
         this.x_speed = -(Math.abs(this.x_speed)) - Math.random();
         this.y_speed += (paddle2.y_speed / 2);
         this.x += this.x_speed;
+        contact.currentTime = 0;
+        contact.play();
       }
     }
   };
@@ -292,9 +303,11 @@ var gameOver = function(players) {
   if (win.x < 100) {
     ctx.fillStyle = '#66FF33';
     ctx.fillText('YOU WIN!!', middle, 150);
+    success.play();
   } else {
     ctx.fillStyle = '#FF0000';
     ctx.fillText('YOU LOSE :(', middle, 150);
+    lose.play();
   }
 }
 
