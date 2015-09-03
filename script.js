@@ -14,10 +14,15 @@ var height = canvas.height;
 var middle = ((width - 5) / 2);
 var keysDown = {};
 var runAnimation = {value: true};
+var paddles = [];
 
 // Create the paddles and ball objects
 var player = new Paddle(20, 100, 20, 100); // Left Paddle
 var computer = new Paddle(660, 100, 20, 100); // Right paddle
+
+// Add the paddles to the array
+paddles.push(player, computer);
+
 var ball = new Ball(360, 300);
 var start = new Button('Start');
 var end = new Button('Restart');
@@ -217,7 +222,7 @@ function Paddle(x, y, wide, long) {
     if (this.score === 10) {
       // Stop the animation
       runAnimation.value = false;
-      gameOver();
+      gameOver(paddles);
     }
     return this.score;
   }
@@ -247,7 +252,7 @@ function initialize() {
   ctx.fillStyle = '#66FF33';
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
   ctx.fillText(player.score, middle - 80, 80);
-  ctx.fillText(computer.score, middle + 50, 80);
+  ctx.fillText(computer.score, middle + 80, 80);
 }
 
 var update = function() {
@@ -256,16 +261,19 @@ var update = function() {
   computer.update(ball);
 };
 
-var gameOver = function() {
-  initialize();
-  ctx.font = '40px "Comic Sans MS", cursive, sans-serif';
+var gameOver = function(players) {
+  drawScreen(end);
+  ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
+  ctx.textAlign = 'center';
+  // Get the player with the highest score
+  var win = players[0].score > players[1].score ? players[0] : players[1];
 
   if (win.x < 100){
     ctx.fillStyle = '#66FF33';
-    ctx.fillText("YOU WIN!!", 50, 150);
+    ctx.fillText("YOU WIN!!", middle, 150);
   } else {
     ctx.fillStyle = '#FF0000';
-    ctx.fillText("YOU LOSE :(", 50, 150);
+    ctx.fillText("YOU LOSE :(", middle, 150);
   }
 }
 
