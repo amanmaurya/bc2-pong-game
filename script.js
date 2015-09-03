@@ -30,8 +30,8 @@ var computer = new Paddle('human2', 660, 100, 20, 100); // Left Paddle
 paddles.push(player, computer);
 
 var ball = new Ball(360, 300);
-var start = new Button('Start');
-var restart = new Button('Restart');
+var start = new Button('Start', width / 2 - 50, height / 2 - 25);
+var restart = new Button('Restart', width / 2 - 50, height / 2 - 25);
 
 // Global events
 window.addEventListener('keydown', function(event) {
@@ -98,9 +98,9 @@ function randomDirection() {
   }
 }
 
-function Button(text) {
-  this.x = width / 2 - 50,
-  this.y = height / 2 - 25,
+function Button(text, x, y) {
+  this.x = x,
+  this.y = y,
   this.w = 100,
   this.h = 50,
 
@@ -115,7 +115,7 @@ function Button(text) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStlye = 'white';
-    ctx.fillText(text, width / 2, height / 2);
+    ctx.fillText(text, this.x + this.w/2, this.y + this.h/2);
   };
 };
 
@@ -355,7 +355,7 @@ function main() {
   }
 }
 
-function drawScreen(button) {
+function drawScreen(buttons) {
   var line1 = "Control the paddle on the left by using the up and down arrows.";
   var line2 = "The first player to reach a score of 10 wins the game.";
   var line3 = "GOOD LUCK!";
@@ -374,7 +374,9 @@ function drawScreen(button) {
   };
 
   // Draw the start/restart button
-  button.render();
+  for (var j = buttons.length - 1; j >= 0; j--) {
+    buttons[j].render();
+  }
 
   // Render Instructions
   ctx.font = '30px Arial, sans-serif';
@@ -390,5 +392,5 @@ function drawScreen(button) {
 }
 
 window.onload = function() {
-  drawScreen(start);
+  drawScreen([start]);
 };
