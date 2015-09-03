@@ -50,19 +50,23 @@ canvas.addEventListener('click', function(event) {
     // Check if the start button has been clicked
     if (event.pageX >= start.x && event.pageY <= start.y + start.h) {
       animate(main);
+
       // Delete the start button
       // Necessary so as to remove the start button click handlers
       start = {};
     }
+
     // If the Game is over & the restart button has been clicked
     else if (runAnimation.value === false) {
-      if (event.pageX >= restart.x && event.pageY <= restart.y + restart.h)
+      if (event.pageX >= restart.x && event.pageY <= restart.y + restart.h) {
         animate(main);
         runAnimation.value = true;
-        // Reset the scores
-        for (var i = paddles.length - 1; i >= 0; i--) {
-          paddles[i].score = 0;
-        };
+      }
+
+      // Reset the scores
+      for (var i = paddles.length - 1; i >= 0; i--) {
+        paddles[i].score = 0;
+      };
     }
   }, false);
 
@@ -239,6 +243,7 @@ function Paddle(x, y, wide, long) {
       runAnimation.value = false;
       gameOver(paddles);
     }
+
     return this.score;
   }
 }
@@ -280,15 +285,16 @@ var gameOver = function(players) {
   drawScreen(restart);
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
   ctx.textAlign = 'center';
+
   // Get the player with the highest score
   var win = players[0].score > players[1].score ? players[0] : players[1];
 
-  if (win.x < 100){
+  if (win.x < 100) {
     ctx.fillStyle = '#66FF33';
-    ctx.fillText("YOU WIN!!", middle, 150);
+    ctx.fillText('YOU WIN!!', middle, 150);
   } else {
     ctx.fillStyle = '#FF0000';
-    ctx.fillText("YOU LOSE :(", middle, 150);
+    ctx.fillText('YOU LOSE :(', middle, 150);
   }
 }
 
@@ -297,7 +303,7 @@ function main() {
   update();
 
   // Call animation function before the next repaint
-  if(runAnimation.value) {
+  if (runAnimation.value) {
     animate(main);
   }
 }
