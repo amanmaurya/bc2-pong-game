@@ -59,6 +59,10 @@ canvas.addEventListener('click', function(event) {
       if (event.pageX >= restart.x && event.pageY <= restart.y + restart.h)
         animate(main);
         runAnimation.value = true;
+        // Reset the scores
+        for (var i = paddles.length - 1; i >= 0; i--) {
+          paddles[i].score = 0;
+        };
     }
   }, false);
 
