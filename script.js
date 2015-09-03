@@ -26,9 +26,6 @@ var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
 // var computer = new Paddle('droid', 660, 100, 20, 100); // Right paddle
 var computer = new Paddle('human2', 660, 100, 20, 100); // Left Paddle
 
-// Add the paddles to the array
-paddles.push(player, computer);
-
 var ball = new Ball(360, 300);
 var start = new Button('Start', width / 2 - 50, height / 2 - 25);
 var restart = new Button('Restart', width / 2 - 50, height / 2 - 25);
@@ -67,8 +64,13 @@ canvas.addEventListener('mousedown', function(event) {
           x: event.clientX - rect.left,
           y: event.clientY - rect.top
         };
-    if (coords.x >= start.x && coords.y <= start.y + start.h
-      && coords.x <= start.x + start.w && coords.y >= start.y) {
+    // If one player mode is chosen
+    if (coords.x >= onePlayer.x && coords.y <= onePlayer.y + onePlayer.h
+      && coords.x <= onePlayer.x + onePlayer.w && coords.y >= onePlayer.y) {
+      var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
+      var computer = new Paddle('droid', 660, 100, 20, 100); // Right paddle
+      // Add the paddles to the array
+      paddles.push(player, computer);
       animate(main);
 
       // Delete the start button
