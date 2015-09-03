@@ -25,7 +25,7 @@ paddles.push(player, computer);
 
 var ball = new Ball(360, 300);
 var start = new Button('Start');
-var end = new Button('Restart');
+var restart = new Button('Restart');
 
 // Global events
 window.addEventListener('keydown', function(event) {
@@ -50,6 +50,15 @@ canvas.addEventListener('click', function(event) {
     // Check if the start button has been clicked
     if (event.pageX >= start.x && event.pageY <= start.y + start.h) {
       animate(main);
+      // Delete the start button
+      // Necessary so as to remove the start button click handlers
+      start = {};
+    }
+    // If the Game is over & the restart button has been clicked
+    else if (runAnimation.value === false) {
+      if (event.pageX >= restart.x && event.pageY <= restart.y + restart.h)
+        animate(main);
+        runAnimation.value = true;
     }
   }, false);
 
@@ -69,6 +78,8 @@ function Button(text) {
   this.h = 50,
 
   this.render = function() {
+    // Set the line dash back to bold
+    ctx.setLineDash([]);
     ctx.strokeStyle = 'white';
     ctx.lineWidth = '2';
     ctx.strokeRect(this.x, this.y, this.w, this.h);
@@ -262,7 +273,7 @@ var update = function() {
 };
 
 var gameOver = function(players) {
-  drawScreen(end);
+  drawScreen(restart);
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
   ctx.textAlign = 'center';
   // Get the player with the highest score
