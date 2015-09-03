@@ -14,11 +14,61 @@ var height = canvas.height;
 var middle = ((width - 5) / 2);
 var keysDown = {};
 var runAnimation = {value: true};
+var paddles = [];
 
 // Create the paddles and ball objects
 var player = new Paddle(20, 100, 20, 100); // Left Paddle
 var computer = new Paddle(660, 100, 20, 100); // Right paddle
+
+// Add the paddles to the array
+paddles.push(player, computer);
+
 var ball = new Ball(360, 300);
+var start = new Button('Start');
+var restart = new Button('Restart');
+
+// Global events
+window.addEventListener('keydown', function(event) {
+  switch (event.keyCode) {
+    case 38: // Down Arrow
+      keysDown[event.keyCode] = true;
+      break;
+    case 40: // Up Arrow
+      keysDown[event.keyCode] = true;
+      break;
+    default:
+      return; // Do nothing
+  }
+});
+
+window.addEventListener('keyup', function(event) {
+  delete keysDown[event.keyCode];
+});
+
+// Add event listener to the canvas
+canvas.addEventListener('click', function(event) {
+    // Check if the start button has been clicked
+    if (event.pageX >= start.x && event.pageY <= start.y + start.h) {
+      animate(main);
+
+      // Delete the start button
+      // Necessary so as to remove the start button click handlers
+      start = {};
+    }
+
+    // If the Game is over & the restart button has been clicked
+    else if (runAnimation.value === false) {
+      if (event.pageX >= restart.x && event.pageY <= restart.y + restart.h) {
+        animate(main);
+        runAnimation.value = true;
+      }
+
+      // Reset the scores
+      for (var i = paddles.length - 1; i >= 0; i--) {
+        paddles[i].score = 0;
+      };
+    }
+  }, false);
 
 // Determines whether the ball is served heading up or down
 function randomDirection() {
@@ -28,6 +78,27 @@ function randomDirection() {
     return 1;
   }
 }
+
+function Button(text) {
+  this.x = width / 2 - 50,
+  this.y = height / 2 - 25,
+  this.w = 100,
+  this.h = 50,
+
+  this.render = function() {
+    // Set the line dash back to bold
+    ctx.setLineDash([]);
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = '2';
+    ctx.strokeRect(this.x, this.y, this.w, this.h);
+
+    ctx.font = '18px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStlye = 'white';
+    ctx.fillText(text, width / 2, height / 2);
+  };
+};
 
 function Ball(x, y) {
   this.x = x;
@@ -170,8 +241,9 @@ function Paddle(x, y, wide, long) {
     if (this.score === 10) {
       // Stop the animation
       runAnimation.value = false;
-      gameOver(player, computer);
+      gameOver(paddles);
     }
+
     return this.score;
   }
 }
@@ -200,7 +272,7 @@ function initialize() {
   ctx.fillStyle = '#66FF33';
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
   ctx.fillText(player.score, middle - 80, 80);
-  ctx.fillText(computer.score, middle + 50, 80);
+  ctx.fillText(computer.score, middle + 80, 80);
 }
 
 var update = function() {
@@ -209,17 +281,20 @@ var update = function() {
   computer.update(ball);
 };
 
-var gameOver = function(player1, player2) {
-  initialize();
-  ctx.font = '40px "Comic Sans MS", cursive, sans-serif';
-  var win = player1.score > player2.score ? player1 : player2;
+var gameOver = function(players) {
+  drawScreen(restart);
+  ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
+  ctx.textAlign = 'center';
 
-  if (win.x < 100){
+  // Get the player with the highest score
+  var win = players[0].score > players[1].score ? players[0] : players[1];
+
+  if (win.x < 100) {
     ctx.fillStyle = '#66FF33';
-    ctx.fillText("YOU WIN!!", 50, 150);
+    ctx.fillText('YOU WIN!!', middle, 150);
   } else {
     ctx.fillStyle = '#FF0000';
-    ctx.fillText("YOU LOSE :(", 50, 150);
+    ctx.fillText('YOU LOSE :(', middle, 150);
   }
 }
 
@@ -228,28 +303,24 @@ function main() {
   update();
 
   // Call animation function before the next repaint
-  if(runAnimation.value) {
+  if (runAnimation.value) {
     animate(main);
   }
 }
 
+function drawScreen(button) {
+  // Draw the canvas background
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, width, height);
+
+  // Render the paddles
+  computer.render();
+  player.render();
+
+  // Draw the start/restart button
+  button.render();
+}
+
 window.onload = function() {
-  animate(main);
+  drawScreen(start);
 };
-
-window.addEventListener('keydown', function(event) {
-  switch (event.keyCode) {
-    case 38: // Down Arrow
-      keysDown[event.keyCode] = true;
-      break;
-    case 40: // Up Arrow
-      keysDown[event.keyCode] = true;
-      break;
-    default:
-      return; // Do nothing
-  }
-});
-
-window.addEventListener('keyup', function(event) {
-  delete keysDown[event.keyCode];
-});
