@@ -51,9 +51,15 @@ window.addEventListener('keyup', function(event) {
 });
 
 // Add event listener to the canvas
-canvas.addEventListener('click', function(event) {
+canvas.addEventListener('mousedown', function(event) {
     // Check if the start button has been clicked
-    if (event.pageX >= start.x && event.pageY <= start.y + start.h) {
+    var rect = canvas.getBoundingClientRect();
+    var coords = {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+    if (coords.x >= start.x && coords.y <= start.y + start.h
+      && coords.x <= start.x + start.w && coords.y >= start.y) {
       animate(main);
 
       // Delete the start button
@@ -63,7 +69,8 @@ canvas.addEventListener('click', function(event) {
 
     // If the Game is over & the restart button has been clicked
     else if (runAnimation.value === false) {
-      if (event.pageX >= restart.x && event.pageY <= restart.y + restart.h) {
+      if (coords.x >= restart.x && coords.y <= restart.y + restart.h
+        && coords.x <= restart.x + restart.w && coords.y >= restart.y) {
         animate(main);
         runAnimation.value = true;
       }
