@@ -21,16 +21,11 @@ var keysDown = {};
 var runAnimation = {value: true};
 var paddles = [];
 
-// Create the paddles and ball objects
-var player = new Paddle(20, 100, 20, 100); // Left Paddle
-var computer = new Paddle(660, 100, 20, 100); // Right paddle
-
-// Add the paddles to the array
-paddles.push(player, computer);
-
+// Create the ball and start button objects
 var ball = new Ball(360, 300);
-var start = new Button('Start');
-var restart = new Button('Restart');
+var restart = new Button('Restart', width / 2 - 50, height / 2 - 25);
+var onePlayer = new Button('1 Player', width / 2 - 250, height / 2 - 50);
+var twoPlayer = new Button('2 Players', width / 2 + 150, height / 2 - 50);
 
 // Global events
 window.addEventListener('keydown', function(event) {
@@ -39,6 +34,12 @@ window.addEventListener('keydown', function(event) {
       keysDown[event.keyCode] = true;
       break;
     case 40: // Up Arrow
+      keysDown[event.keyCode] = true;
+      break;
+    case 65: // a
+      keysDown[event.keyCode] = true;
+      break;
+    case 90: // z
       keysDown[event.keyCode] = true;
       break;
     default:
@@ -56,15 +57,34 @@ canvas.addEventListener('mousedown', function(event) {
     var rect = canvas.getBoundingClientRect();
     var coords = {
           x: event.clientX - rect.left,
-          y: event.clientY - rect.top
+          y: event.clientY - rect.top,
         };
-    if (coords.x >= start.x && coords.y <= start.y + start.h
-      && coords.x <= start.x + start.w && coords.y >= start.y) {
+
+    // If one player mode is chosen
+    if (coords.x >= onePlayer.x && coords.y <= onePlayer.y + onePlayer.h
+      && coords.x <= onePlayer.x + onePlayer.w && coords.y >= onePlayer.y) {
+      var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
+      var computer = new Paddle('droid', 660, 100, 20, 100); // Right paddle
+      // Add the paddles to the array
+      paddles.push(player, computer);
       animate(main);
 
-      // Delete the start button
-      // Necessary so as to remove the start button click handlers
-      start = {};
+      // Delete the choice buttons
+      // Necessary so as to remove the attached event handlers
+      onePlayer = {};
+      twoPlayer = {};
+    } else if (coords.x >= twoPlayer.x && coords.y <= twoPlayer.y + twoPlayer.h
+      && coords.x <= twoPlayer.x + twoPlayer.w && coords.y >= twoPlayer.y) {
+      var player = new Paddle('human', 20, 100, 20, 100); // Left Paddle
+      var computer = new Paddle('human2', 660, 100, 20, 100); // Right paddle
+      // Add the paddles to the array
+      paddles.push(player, computer);
+      animate(main);
+
+      // Delete the choice buttons
+      // Necessary so as to remove the attached event handlers
+      onePlayer = {};
+      twoPlayer = {};
     }
 
     // If the Game is over & the restart button has been clicked
@@ -91,24 +111,24 @@ function randomDirection() {
   }
 }
 
-function Button(text) {
-  this.x = width / 2 - 50,
-  this.y = height / 2 - 25,
+function Button(text, x, y) {
+  this.x = x,
+  this.y = y,
   this.w = 100,
   this.h = 50,
 
   this.render = function() {
     // Set the line dash back to bold
     ctx.setLineDash([]);
-    ctx.strokeStyle = 'white';
+    ctx.strokeStyle = '#FFFFFF';
     ctx.lineWidth = '2';
     ctx.strokeRect(this.x, this.y, this.w, this.h);
 
     ctx.font = '18px Arial, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStlye = 'white';
-    ctx.fillText(text, width / 2, height / 2);
+    ctx.fillStlye = '#FFFFFF';
+    ctx.fillText(text, this.x + this.w / 2, this.y + this.h / 2);
   };
 };
 
@@ -195,7 +215,8 @@ function Ball(x, y) {
   };
 }
 
-function Paddle(x, y, wide, long) {
+function Paddle(name, x, y, wide, long) {
+  this.name = name;
   this.x = x;
   this.y = y;
   this.width = wide;
@@ -225,10 +246,20 @@ function Paddle(x, y, wide, long) {
   };
 
   this.updatePosition = function() {
-    if (keysDown[38] === true) {
-      this.move(0, -5);
-    } else if (keysDown[40] === true) {
-      this.move(0, 5);
+    if (this.name !== 'droid') {
+      if (this.name.indexOf('2') !== -1) { // Right Paddle
+        if (keysDown[38] === true) {
+          this.move(0, -5);
+        } else if (keysDown[40] === true) {
+          this.move(0, 5);
+        }
+      } else {
+        if (keysDown[65] === true) { // A
+          this.move(0, -5);
+        } else if (keysDown[90] === true) { // Z
+          this.move(0, 5);
+        }
+      }
     }
   };
 
@@ -240,9 +271,9 @@ function Paddle(x, y, wide, long) {
     var diff = -((this.y + (this.height / 2)) - y_position);
 
     // If the ball is above the paddle
-    if (diff < 0 && diff < -4) {
+    if (diff < 0 && diff < -10) {
       diff = -5; // max speed up
-    } else if (diff > 0 && diff > 4) {
+    } else if (diff > 0 && diff > 10) {
       diff = 5; // max speed down
     }
 
@@ -273,8 +304,10 @@ function initialize() {
   ctx.fillRect(0, 0, width, height);
 
   // Render the paddles
-  computer.render();
-  player.render();
+  for (var i = paddles.length - 1; i >= 0; i--) {
+    paddles[i].render();
+  }
+
   ball.render();
 
   // Render the line boundary
@@ -289,32 +322,50 @@ function initialize() {
   // Render the scores
   ctx.fillStyle = '#66FF33';
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
-  ctx.fillText(player.score, middle - 80, 80);
-  ctx.fillText(computer.score, middle + 80, 80);
+  ctx.fillText(paddles[0].score, middle - 80, 80);
+  ctx.fillText(paddles[1].score, middle + 80, 80);
 }
 
 var update = function() {
-  ball.updatePosition(player, computer);
-  player.updatePosition();
-  computer.update(ball);
+  ball.updatePosition(paddles[0], paddles[1]);
+
+  for (var i = 0; i < paddles.length; i++) {
+    if (paddles[i].name === 'droid') {
+      paddles[i].update(ball);
+    } else {
+      paddles[i].updatePosition();
+    }
+  }
+
 };
 
 var gameOver = function(players) {
-  drawScreen(restart);
+  drawScreen([restart]);
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
   ctx.textAlign = 'center';
 
   // Get the player with the highest score
   var win = players[0].score > players[1].score ? players[0] : players[1];
 
-  if (win.x < 100) {
-    ctx.fillStyle = '#66FF33';
-    ctx.fillText('YOU WIN!!', middle, 150);
-    success.play();
-  } else {
-    ctx.fillStyle = '#FF0000';
-    ctx.fillText('YOU LOSE :(', middle, 150);
-    lose.play();
+  // One player mode
+  if (players[0].name === 'droid' || players[1].name === 'droid'){
+    if (win.x < 100) {
+      ctx.fillStyle = '#66FF33';
+      ctx.fillText('YOU WIN!!', middle, 150);
+      success.play();
+    } else {
+      ctx.fillStyle = '#FF0000';
+      ctx.fillText('YOU LOSE :(', middle, 150);
+      lose.play();
+    }
+  } else { // Two player mode
+    if (win.x < 100) {
+      ctx.fillStyle = '#66FF33';
+      ctx.fillText('Player 1 wins', middle, 150);
+    } else {
+      ctx.fillStyle = '#66FF33';
+      ctx.fillText('Player 2 wins', middle, 150);
+    }
   }
 }
 
@@ -328,10 +379,13 @@ function main() {
   }
 }
 
-function drawScreen(button) {
-  var line1 = "Control the paddle on the left by using the up and down arrows.";
-  var line2 = "The first player to reach a score of 10 wins the game.";
-  var line3 = "GOOD LUCK!";
+function drawScreen(buttons) {
+  var line0 = 'Use keys A and Z to move the left paddle up and down';
+  var line1 = 'Player 1: Move the left paddle up and down using keys A and Z';
+  var line2 = 'Player 2: Move the right paddle up and down using the Up and Down Arrows';
+  var line3 = 'The first player to reach a score of 10 wins the game.';
+  var line4 = 'GOOD LUCK!';
+
   // Draw the canvas background
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
@@ -339,28 +393,38 @@ function drawScreen(button) {
   ctx.fillStyle = '#CCFFFF';
   ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('PONG', middle, 150);
+  ctx.fillText('PONG', middle, 70);
 
   // Render the paddles
-  computer.render();
-  player.render();
+  for (var i = paddles.length - 1; i >= 0; i--) {
+    paddles[i].render();
+  }
 
   // Draw the start/restart button
-  button.render();
+  for (var j = buttons.length - 1; j >= 0; j--) {
+    buttons[j].render();
+  }
 
   // Render Instructions
-  ctx.font = '30px Arial, sans-serif';
-  ctx.textAlign = 'center';
+  ctx.font = '25px Arial, sans-serif';
   ctx.textBaseline = 'middle';
   ctx.fillStlye = 'white';
-  ctx.fillText("INSTRUCTIONS:", width / 2, (height / 2) + 70);
+
+  ctx.fillText('SINGLE PLAYER MODE:', width / 2, (height / 2) + 70);
 
   ctx.font = '20px Arial, sans-serif';
-  ctx.fillText(line1, width / 2, (height / 2) + 100);
-  ctx.fillText(line2, width / 2, (height / 2) + 130);
-  ctx.fillText(line3, width / 2, (height / 2) + 160);
+  ctx.fillText(line0, width / 2, (height / 2) + 100);
+
+  ctx.font = '25px Arial, sans-serif';
+  ctx.fillText('2 - PLAYER MODE:', width / 2, (height / 2) + 140);
+
+  ctx.font = '20px Arial, sans-serif';
+  ctx.fillText(line1, width / 2, (height / 2) + 170);
+  ctx.fillText(line2, width / 2, (height / 2) + 200);
+  ctx.fillText(line3, width / 2, (height / 2) + 230);
+  ctx.fillText(line4, width / 2, (height / 2) + 280);
 }
 
 window.onload = function() {
-  drawScreen(start);
+  drawScreen([onePlayer, twoPlayer]);
 };
