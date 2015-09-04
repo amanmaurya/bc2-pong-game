@@ -120,14 +120,14 @@ function Button(text, x, y) {
   this.render = function() {
     // Set the line dash back to bold
     ctx.setLineDash([]);
-    ctx.strokeStyle = 'white';
+    ctx.strokeStyle = '#FFFFFF';
     ctx.lineWidth = '2';
     ctx.strokeRect(this.x, this.y, this.w, this.h);
 
     ctx.font = '18px Arial, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStlye = 'white';
+    ctx.fillStlye = '#FFFFFF';
     ctx.fillText(text, this.x + this.w / 2, this.y + this.h / 2);
   };
 };
@@ -380,8 +380,9 @@ function main() {
 }
 
 function drawScreen(buttons) {
-  var line1 = 'Control the paddle on the left using keys A and Z';
-  var line2 = 'Control the paddle on the right using the up and down arrows.';
+  var line0 = 'Use keys A and Z to control the left paddle';
+  var line1 = 'Player 1: Control the paddle on the left using keys A and Z';
+  var line2 = 'Player 2: Control the paddle on the left using the Up and Down Arrows';
   var line3 = 'The first player to reach a score of 10 wins the game.';
   var line4 = 'GOOD LUCK!';
 
@@ -397,7 +398,7 @@ function drawScreen(buttons) {
   // Render the paddles
   for (var i = paddles.length - 1; i >= 0; i--) {
     paddles[i].render();
-  };
+  }
 
   // Draw the start/restart button
   for (var j = buttons.length - 1; j >= 0; j--) {
@@ -406,14 +407,13 @@ function drawScreen(buttons) {
 
   // Render Instructions
   ctx.font = '25px Arial, sans-serif';
-  ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStlye = 'white';
 
   ctx.fillText('SINGLE PLAYER MODE:', width / 2, (height / 2) + 70);
 
   ctx.font = '20px Arial, sans-serif';
-  ctx.fillText(line1, width / 2, (height / 2) + 100);
+  ctx.fillText(line0, width / 2, (height / 2) + 100);
 
   ctx.font = '25px Arial, sans-serif';
   ctx.fillText('2 - PLAYER MODE:', width / 2, (height / 2) + 140);
