@@ -271,9 +271,9 @@ function Paddle(name, x, y, wide, long) {
     var diff = -((this.y + (this.height / 2)) - y_position);
 
     // If the ball is above the paddle
-    if (diff < 0 && diff < -4) {
+    if (diff < 0 && diff < -10) {
       diff = -5; // max speed up
-    } else if (diff > 0 && diff > 4) {
+    } else if (diff > 0 && diff > 10) {
       diff = 5; // max speed down
     }
 
