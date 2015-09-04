@@ -380,9 +380,9 @@ function main() {
 }
 
 function drawScreen(buttons) {
-  var line0 = 'Use keys A and Z to control the left paddle';
-  var line1 = 'Player 1: Control the paddle on the left using keys A and Z';
-  var line2 = 'Player 2: Control the paddle on the left using the Up and Down Arrows';
+  var line0 = 'Use keys A and Z to move the left paddle up and down';
+  var line1 = 'Player 1: Move the left paddle up and down using keys A and Z';
+  var line2 = 'Player 2: Move the right paddle up and down using the Up and Down Arrows';
   var line3 = 'The first player to reach a score of 10 wins the game.';
   var line4 = 'GOOD LUCK!';
 
