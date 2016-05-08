@@ -347,8 +347,13 @@ var gameOver = function(players) {
   // Get the player with the highest score
   var win = players[0].score > players[1].score ? players[0] : players[1];
 
-  // One player mode
-  if (players[0].name === 'droid' || players[1].name === 'droid'){
+  // Check if one player mode is active
+  function onePlayerMode(player) {
+    return player.name === 'droid';
+  }
+
+  if (players.some(onePlayerMode)) {
+    // One player mode
     if (win.x < 100) {
       ctx.fillStyle = '#66FF33';
       ctx.fillText('YOU WIN!!', middle, 150);
@@ -358,7 +363,8 @@ var gameOver = function(players) {
       ctx.fillText('YOU LOSE :(', middle, 150);
       lose.play();
     }
-  } else { // Two player mode
+  } else {
+    // Two player mode
     if (win.x < 100) {
       ctx.fillStyle = '#66FF33';
       ctx.fillText('Player 1 wins', middle, 150);
