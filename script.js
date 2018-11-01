@@ -355,13 +355,13 @@ function initialize() {
 var update = function() {
 	ball.updatePosition(paddles[0], paddles[1]);
 
-	for (var i = 0; i < paddles.length; i++) {
-		if (paddles[i].name === 'droid') {
-			paddles[i].update(ball);
+	paddles.forEach(function(paddle) {
+		if (paddle.name === 'droid') {
+			paddle.update(ball);
 		} else {
-			paddles[i].updatePosition();
+			paddle.updatePosition();
 		}
-	}
+	});
 };
 
 var gameOver = function(players) {
@@ -428,14 +428,14 @@ function drawScreen(buttons) {
 	ctx.fillText('PONG', middle, 70);
 
 	// Render the paddles
-	for (var i = paddles.length - 1; i >= 0; i--) {
-		paddles[i].render();
-	}
+	paddles.forEach(function(paddle) {
+		paddle.render();
+	});
 
-	// Draw the start/restart button
-	for (var j = buttons.length - 1; j >= 0; j--) {
-		buttons[j].render();
-	}
+	// Draw the start/restart buttons
+	buttons.forEach(function(btn) {
+		btn.render();
+	});
 
 	// Render Instructions
 	ctx.font = '25px Arial, sans-serif';
