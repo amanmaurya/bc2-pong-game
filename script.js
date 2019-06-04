@@ -411,50 +411,49 @@ function main() {
 }
 
 function drawScreen(buttons) {
-	var line0 = 'Use keys A and Z to move the left paddle up and down';
-	var line1 = 'Player 1: Move the left paddle up and down using keys A and Z';
-	var line2 =
-		'Player 2: Move the right paddle up and down using the Up and Down Arrows';
-	var line3 = 'The first player to reach a score of 10 wins the game.';
-	var line4 = 'GOOD LUCK!';
+  var line0 = 'Use keys A and Z to move the left paddle up and down';
+  var line1 = 'Player 1: Move the left paddle up and down using keys A and Z';
+  var line2 = 'Player 2: Move the right paddle up and down using the Up and Down Arrows';
+  var line3 = 'The first player to reach a score of 10 wins the game.';
+  var line4 = 'GOOD LUCK!';
 
-	// Draw the canvas background
-	ctx.fillStyle = '#000000';
-	ctx.fillRect(0, 0, width, height);
+  // Draw the canvas background
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, width, height);
 
-	ctx.fillStyle = '#CCFFFF';
-	ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
-	ctx.textAlign = 'center';
-	ctx.fillText('PONG', middle, 70);
+  ctx.fillStyle = '#CCFFFF';
+  ctx.font = '60px "Comic Sans MS", cursive, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('PONG', middle, 70);
 
-	// Render the paddles
-	paddles.forEach(function(paddle) {
-		paddle.render();
-	});
+  // Render the paddles
+  for (var i = paddles.length - 1; i >= 0; i--) {
+    paddles[i].render();
+  }
 
-	// Draw the start/restart buttons
-	buttons.forEach(function(btn) {
-		btn.render();
-	});
+  // Draw the start/restart button
+  for (var j = buttons.length - 1; j >= 0; j--) {
+    buttons[j].render();
+  }
 
-	// Render Instructions
-	ctx.font = '25px Arial, sans-serif';
-	ctx.textBaseline = 'middle';
-	ctx.fillStlye = 'white';
+  // Render Instructions
+  ctx.font = '25px Arial, sans-serif';
+  ctx.textBaseline = 'middle';
+  ctx.fillStlye = 'white';
 
-	ctx.fillText('SINGLE PLAYER MODE:', width / 2, height / 2 + 70);
+  ctx.fillText('1 - PLAYER MODE:', width / 2, (height / 2) + 70);
 
-	ctx.font = '20px Arial, sans-serif';
-	ctx.fillText(line0, width / 2, height / 2 + 100);
+  ctx.font = '20px Arial, sans-serif';
+  ctx.fillText(line0, width / 2, (height / 2) + 100);
 
-	ctx.font = '25px Arial, sans-serif';
-	ctx.fillText('2 - PLAYER MODE:', width / 2, height / 2 + 140);
+  ctx.font = '25px Arial, sans-serif';
+  ctx.fillText('2 - PLAYER MODE:', width / 2, (height / 2) + 140);
 
-	ctx.font = '20px Arial, sans-serif';
-	ctx.fillText(line1, width / 2, height / 2 + 170);
-	ctx.fillText(line2, width / 2, height / 2 + 200);
-	ctx.fillText(line3, width / 2, height / 2 + 230);
-	ctx.fillText(line4, width / 2, height / 2 + 280);
+  ctx.font = '20px Arial, sans-serif';
+  ctx.fillText(line1, width / 2, (height / 2) + 170);
+  ctx.fillText(line2, width / 2, (height / 2) + 200);
+  ctx.fillText(line3, width / 2, (height / 2) + 230);
+  ctx.fillText(line4, width / 2, (height / 2) + 280);
 }
 
 window.onload = function() {
